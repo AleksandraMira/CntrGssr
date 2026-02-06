@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.android.junit5)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -36,11 +41,37 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.timber)
+
+    //Room
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+
+    // Hilt
+    implementation(libs.androidx.hilt.navigationCompose)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.hilt.android.core)
+    ksp(libs.androidx.hilt.compiler)
+    ksp(libs.hilt.compiler)
+
+    // Instrumentation tests
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Hilt testing
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
+
+    // JUnit 5
+    testImplementation(libs.junit)
+    testImplementation(libs.junit5.api)
+    testImplementation(libs.junit5.params)
+    testRuntimeOnly(libs.junit5.engine)
+    testRuntimeOnly(libs.junit5.vintage.engine)
 }
