@@ -51,6 +51,8 @@ dependencies {
     //Room
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.material3.android)
     ksp(libs.room.compiler)
 
     // Hilt
