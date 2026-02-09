@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.example.cntrgssr"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.cntrgssr"
@@ -45,19 +45,19 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.foundation.android)
+    implementation(libs.androidx.material3.android)
     implementation(libs.timber)
 
     //Room
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
-    implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.material3.android)
     ksp(libs.room.compiler)
 
     // Hilt
     implementation(libs.androidx.hilt.navigationCompose)
     implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.runtime)
     implementation(libs.hilt.android.core)
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.hilt.compiler)

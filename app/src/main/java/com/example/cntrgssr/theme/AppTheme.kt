@@ -1,4 +1,4 @@
-package com.example.cntrgssr.core.theme
+package com.example.cntrgssr.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
