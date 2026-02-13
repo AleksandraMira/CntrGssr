@@ -48,10 +48,13 @@ dependencies {
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3.android)
     implementation(libs.timber)
+    implementation(libs.androidx.navigation.compose)
 
     //Room
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
+    implementation(libs.androidx.ui.tooling.preview.android)
+    debugImplementation(libs.androidx.ui.tooling)
     ksp(libs.room.compiler)
 
     // Hilt

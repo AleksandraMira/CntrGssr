@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">CntrGssr</string>
+
+    <!-- Home Screen start -->
+    <string name="home_screen_app_name">Cntr Gssr</string>
+    <string name="home_screen_start_button">Start</string>
+    <string name="home_screen_guide_button">Guide</string>
+    <!-- Home Screen end -->
 </resources>
