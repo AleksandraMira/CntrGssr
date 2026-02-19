@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,7 +19,9 @@ import com.example.cntrgssr.R
 import com.example.cntrgssr.theme.AppTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onUserEvent: (Home.UserEvent) -> Unit = {},
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,7 +40,7 @@ fun HomeScreen() {
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 content = { Text(stringResource(R.string.home_screen_guide_button)) },
-                onClick = {},
+                onClick = { onUserEvent(Home.UserEvent.OnGuideButtonClick) },
             )
         }
     }

@@ -6,4 +6,17 @@
     <string name="home_screen_start_button">Start</string>
     <string name="home_screen_guide_button">Guide</string>
     <!-- Home Screen end -->
+
+    <!-- Guide Screen start -->
+    <string name="guide_screen_title">Guess the Country!</string>
+    <string name="guide_screen_hints_title">1. Hints</string>
+    <string name="guide_screen_hints_description">You can use hints, but each hint costs 10 points.\nSelect a hint from the dropdown menu and tap the Hint button to reveal it.</string>
+    <string name="guide_screen_lives_title">2. Lives</string>
+    <string name="guide_screen_lives_description">You start with 3 lives.\nEach incorrect answer costs 1 life and 8 points.\nIf you lose all your lives, the game is over.</string>
+    <string name="guide_screen_good_luck">Have fun playing and good luck!</string>
+    <string name="guide_screen_back_button">Back</string>
+    <string name="guide_screen_give_up_title">3. Give Up</string>
+    <string name="guide_screen_give_up_description">You can give up at any time to reveal the correct answer.</string>
+    <!-- Guide Screen end -->
+
 </resources>

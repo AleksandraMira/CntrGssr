@@ -1,18 +1,16 @@
-package com.example.cntrgssr.presentation.home
+package com.example.cntrgssr.presentation.guide
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.navigation.NavigationNode
-import com.example.cntrgssr.presentation.guide.Guide
-import timber.log.Timber
 
-object Home : NavigationNode() {
+object Guide : NavigationNode() {
     @Composable
     override fun Screen(navController: NavHostController) {
-        val viewModel: HomeViewModel = hiltViewModel()
-        HomeScreen(
+        val viewModel: GuideViewModel = hiltViewModel()
+        GuideScreen(
             onUserEvent = viewModel::onUserEvent,
         )
 
@@ -24,26 +22,23 @@ object Home : NavigationNode() {
 
     @Composable
     private fun HandleUiEvents(
-        viewModel: HomeViewModel,
+        viewModel: GuideViewModel,
         navController: NavHostController,
     ) {
         LaunchedEffect(Unit) {
             viewModel.uiEvent.collect { event ->
-                Timber.tag("Home").d("Received UI event: $event")
                 when (event) {
-                    UiEvent.NavigateToGuide -> navController.navigate(Guide.route) {
-                        launchSingleTop = true
-                    }
+                    UiEvent.NavigateToHome -> navController.navigateUp()
                 }
             }
         }
     }
 
     sealed interface UiEvent {
-        data object NavigateToGuide : UiEvent
+        data object NavigateToHome : UiEvent
     }
 
     sealed interface UserEvent {
-        data object OnGuideButtonClick : UserEvent
+        data object OnBackClicked : UserEvent
     }
 }

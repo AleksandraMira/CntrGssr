@@ -1,4 +1,4 @@
-package com.example.cntrgssr.presentation.home
+package com.example.cntrgssr.presentation.guide
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,14 +9,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
-    private val _uiEvent = MutableSharedFlow<Home.UiEvent>()
+class GuideViewModel @Inject constructor() : ViewModel() {
+    private val _uiEvent = MutableSharedFlow<Guide.UiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    fun onUserEvent(event: Home.UserEvent) {
+    fun onUserEvent(event: Guide.UserEvent) {
         when (event) {
-            Home.UserEvent.OnGuideButtonClick -> viewModelScope.launch {
-                _uiEvent.emit(Home.UiEvent.NavigateToGuide)
+            is Guide.UserEvent.OnBackClicked -> viewModelScope.launch {
+                _uiEvent.emit(Guide.UiEvent.NavigateToHome)
             }
         }
     }

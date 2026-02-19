@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cntrgssr.presentation.guide.Guide
 import com.example.cntrgssr.presentation.home.Home
 import com.example.cntrgssr.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +35,9 @@ class MainActivity : AppCompatActivity() {
         ) {
             composable(Home.route) {
                 Home.Screen(navController)
+            }
+            composable(Guide.route) {
+                Guide.Screen(navController)
             }
         }
     }
