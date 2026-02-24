@@ -35,12 +35,12 @@ fun HomeScreen(
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 content = { Text(stringResource(R.string.home_screen_start_button)) },
-                onClick = {},
+                onClick = { onUserEvent(Home.UserEvent.OnStartButtonClicked) },
             )
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 content = { Text(stringResource(R.string.home_screen_guide_button)) },
-                onClick = { onUserEvent(Home.UserEvent.OnGuideButtonClick) },
+                onClick = { onUserEvent(Home.UserEvent.OnGuideButtonClicked) },
             )
         }
     }

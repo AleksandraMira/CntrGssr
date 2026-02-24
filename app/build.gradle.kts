@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.timber)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.extended)
 
     //Room
     implementation(libs.room.ktx)

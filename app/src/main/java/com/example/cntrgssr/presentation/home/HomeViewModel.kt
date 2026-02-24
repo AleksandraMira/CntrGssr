@@ -15,8 +15,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun onUserEvent(event: Home.UserEvent) {
         when (event) {
-            Home.UserEvent.OnGuideButtonClick -> viewModelScope.launch {
+            Home.UserEvent.OnGuideButtonClicked -> viewModelScope.launch {
                 _uiEvent.emit(Home.UiEvent.NavigateToGuide)
+            }
+            Home.UserEvent.OnStartButtonClicked -> viewModelScope.launch {
+                _uiEvent.emit(Home.UiEvent.NavigateToGame)
             }
         }
     }

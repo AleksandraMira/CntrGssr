@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.navigation.NavigationNode
+import com.example.cntrgssr.presentation.game.Game
 import com.example.cntrgssr.presentation.guide.Guide
 import timber.log.Timber
 
@@ -34,6 +35,9 @@ object Home : NavigationNode() {
                     UiEvent.NavigateToGuide -> navController.navigate(Guide.route) {
                         launchSingleTop = true
                     }
+                    UiEvent.NavigateToGame -> navController.navigate(Game.route) {
+                        launchSingleTop = true
+                    }
                 }
             }
         }
@@ -41,9 +45,11 @@ object Home : NavigationNode() {
 
     sealed interface UiEvent {
         data object NavigateToGuide : UiEvent
+        data object NavigateToGame : UiEvent
     }
 
     sealed interface UserEvent {
-        data object OnGuideButtonClick : UserEvent
+        data object OnGuideButtonClicked : UserEvent
+        data object OnStartButtonClicked : UserEvent
     }
 }
