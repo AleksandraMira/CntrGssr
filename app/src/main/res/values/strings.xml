@@ -19,4 +19,9 @@
     <string name="guide_screen_give_up_description">You can give up at any time to reveal the correct answer.</string>
     <!-- Guide Screen end -->
 
+    <!-- Game Screen start -->
+    <string name="game_screen_your_guess">Your Guess</string>
+    <string name="game_screen_submit_button">Submit</string>
+    <!-- Game Screen end -->
+
 </resources>

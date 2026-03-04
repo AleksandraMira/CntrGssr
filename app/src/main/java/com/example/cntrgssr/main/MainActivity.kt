@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cntrgssr.presentation.game.Game
 import com.example.cntrgssr.presentation.guide.Guide
 import com.example.cntrgssr.presentation.home.Home
+import com.example.cntrgssr.presentation.results.Results
 import com.example.cntrgssr.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +43,9 @@ class MainActivity : AppCompatActivity() {
             }
             composable(Game.route) {
                 Game.Screen(navController)
+            }
+            composable(Results.route){
+                Results.Screen(navController)
             }
         }
     }
