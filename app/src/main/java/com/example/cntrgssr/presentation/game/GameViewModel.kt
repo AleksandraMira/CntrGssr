@@ -3,8 +3,10 @@ package com.example.cntrgssr.presentation.game
 import androidx.compose.material3.TimeInput
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cntrgssr.R
 import com.example.cntrgssr.core.data.dao.CountryDao
 import com.example.cntrgssr.core.dataStore.PreferencesDataStoreRepository
+import com.example.cntrgssr.core.util.ResourceResolver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val countryDao: CountryDao,
+    private val resourceResolver: ResourceResolver,
     preferencesDataStoreRepository: PreferencesDataStoreRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(Game.UiState())
@@ -57,7 +60,7 @@ class GameViewModel @Inject constructor(
         if (uiState.value.answer.isEmpty()) {
             _uiState.update {
                 it.copy(
-                    snackbarMessage = "Answer cannot be empty"
+                    snackbarMessage = resourceResolver.getString(R.string.game_screen_empty_answer)
                 )
             }
             return
