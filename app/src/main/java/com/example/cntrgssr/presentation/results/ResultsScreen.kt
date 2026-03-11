@@ -20,7 +20,9 @@ import com.example.cntrgssr.core.presentation.HeartImage
 import com.example.cntrgssr.theme.AppTheme
 
 @Composable
-fun ResultsScreen() {
+fun ResultsScreen(
+    uiState: Results.UiState,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,18 +53,28 @@ fun ResultsScreen() {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "X points",
+                            "Correct answer:",
                             style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
                         )
                         Text(
-                            "-",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
-                        )
-                        Text(
-                            "Croatia",
+                            uiState.countryName,
                             style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
                         )
                     }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            "Your result:",
+                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+                        )
+                        Text(
+                            "20 pts",
+                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+                        )
+                    }
+                    
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
@@ -114,6 +126,10 @@ fun ResultsScreen() {
 @Composable
 fun ResultsScreenPreview() {
     AppTheme {
-        ResultsScreen()
+        ResultsScreen(
+            uiState = Results.UiState(
+                countryName = "Italy",
+            )
+        )
     }
 }

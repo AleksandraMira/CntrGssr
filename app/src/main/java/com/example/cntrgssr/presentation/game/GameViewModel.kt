@@ -1,6 +1,5 @@
 package com.example.cntrgssr.presentation.game
 
-import androidx.compose.material3.TimeInput
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cntrgssr.R
@@ -8,16 +7,15 @@ import com.example.cntrgssr.core.data.dao.CountryDao
 import com.example.cntrgssr.core.dataStore.PreferencesDataStoreRepository
 import com.example.cntrgssr.core.util.ResourceResolver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +26,8 @@ class GameViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(Game.UiState())
     val uiState = _uiState.asStateFlow()
+    private val _uiEvent = MutableSharedFlow<Game.UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
 
     private val country = preferencesDataStoreRepository.countryId
         .map { id ->
@@ -57,7 +57,11 @@ class GameViewModel @Inject constructor(
     }
 
     private fun onSubmitAnswer() {
-        if (uiState.value.answer.isEmpty()) {
+        val answer = uiState.value.answer
+        val correctCountryName = country.value?.name
+        val currentHeartNumber = uiState.value.heartNumber
+
+        if (answer.isEmpty()) {
             _uiState.update {
                 it.copy(
                     snackbarMessage = resourceResolver.getString(R.string.game_screen_empty_answer)
@@ -66,18 +70,23 @@ class GameViewModel @Inject constructor(
             return
         }
 
-        if (uiState.value.answer.equals(country.value?.name, ignoreCase = true)) {
-            //TODO: Move to results
-            _uiState.update {
-                it.copy(
-                    snackbarMessage = "Correct! The answer is ${country.value?.name}."
-                )
+        if (answer.equals(correctCountryName, ignoreCase = true)) {
+            viewModelScope.launch {
+                _uiEvent.emit(Game.UiEvent.NavigateToResults)
+            }
+            return
+        }
+
+        val newHeartNumber = currentHeartNumber - 1
+        if (newHeartNumber == 0) {
+            viewModelScope.launch {
+                _uiEvent.emit(Game.UiEvent.NavigateToResults)
             }
         } else {
-            //TODO: Remove one heart
             _uiState.update {
                 it.copy(
-                    snackbarMessage = "Wrong! Try again. The answer is ${country.value?.name}"
+                    heartNumber = newHeartNumber,
+                    answer = "",
                 )
             }
         }

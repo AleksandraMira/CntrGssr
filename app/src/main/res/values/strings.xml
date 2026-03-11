@@ -22,6 +22,7 @@
     <!-- Game Screen start -->
     <string name="game_screen_your_guess">Your Guess</string>
     <string name="game_screen_submit_button">Submit</string>
+    <string name="game_screen_empty_answer">Answer cannot be empty</string>
     <!-- Game Screen end -->
 
 </resources>

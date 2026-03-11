@@ -85,9 +85,9 @@ fun GameScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End)
                 ) {
-                    HeartImage(true)
-                    HeartImage(true)
-                    HeartImage(false)
+                    HeartImage(uiState.heartNumber > 2)
+                    HeartImage(uiState.heartNumber > 1)
+                    HeartImage(uiState.heartNumber > 0)
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,

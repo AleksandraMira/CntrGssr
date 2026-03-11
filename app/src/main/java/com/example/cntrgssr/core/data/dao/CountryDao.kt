@@ -19,4 +19,7 @@ interface CountryDao {
 
     @Query("SELECT * FROM country WHERE id = :id")
     suspend fun getCountryById(id: Long): CountryEntity?
+
+    @Query("SELECT name FROM country WHERE id = :id")
+    suspend fun getCountryNameById(id: Long): String
 }

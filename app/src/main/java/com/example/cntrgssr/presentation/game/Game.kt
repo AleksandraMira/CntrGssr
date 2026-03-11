@@ -1,10 +1,12 @@
 package com.example.cntrgssr.presentation.game
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.navigation.NavigationNode
+import com.example.cntrgssr.presentation.results.Results
 
 object Game : NavigationNode() {
     @Composable
@@ -14,16 +16,39 @@ object Game : NavigationNode() {
             onUserEvent = viewModel::onEvent,
             uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         )
+        HandleUiEvents(
+            viewModel = viewModel,
+            navController = navController,
+        )
+    }
+
+    @Composable
+    private fun HandleUiEvents(
+        viewModel: GameViewModel,
+        navController: NavHostController,
+    ) {
+        LaunchedEffect(Unit) {
+            viewModel.uiEvent.collect { event ->
+                when (event) {
+                    UiEvent.NavigateToResults -> navController.navigate(Results.route)
+                }
+            }
+        }
     }
 
     data class UiState(
         val answer: String = "",
         val snackbarMessage: String? = null,
+        val heartNumber: Int = 3,
     )
 
     sealed interface UserEvent {
         data class OnAnswerChange(val answer: String) : UserEvent
         data object OnSubmitAnswer : UserEvent
         data object OnSnackbarShown : UserEvent
+    }
+
+    sealed interface UiEvent {
+        data object NavigateToResults : UiEvent
     }
 }
