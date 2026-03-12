@@ -50,6 +50,7 @@ object Results : NavigationNode() {
     data class UiState(
         val countryName: String = "",
         val heartNumber: Int = 0,
+        val heartPoints: Int = 0,
     )
 
     sealed interface UiEvent {

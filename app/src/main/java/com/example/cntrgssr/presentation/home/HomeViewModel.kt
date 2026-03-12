@@ -20,14 +20,14 @@ class HomeViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<Home.UiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    init {
-        viewModelScope.launch {
-            countryDao.deleteAllCountries()
-            countryDao.insertCountries(
-                createCountries().map { it.toEntity() }
-            )
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            countryDao.deleteAllCountries()
+//            countryDao.insertCountries(
+//                createCountries().map { it.toEntity() }
+//            )
+//        }
+//    }
 
     fun onUserEvent(event: Home.UserEvent) {
         when (event) {

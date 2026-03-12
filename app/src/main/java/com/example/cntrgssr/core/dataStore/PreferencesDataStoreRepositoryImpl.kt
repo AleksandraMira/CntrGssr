@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -19,13 +20,22 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
 ) : PreferencesDataStoreRepository {
     companion object {
         val COUNTRY_ID_KEY = longPreferencesKey("country_id")
+        val HEART_NUMBER_KEY = intPreferencesKey("heart_number")
     }
 
     override val countryId: Flow<Long> = preferences.data
         .catch { emit(emptyPreferences()) }
         .map { it[COUNTRY_ID_KEY] ?: -1L }
 
+    override val heartNumber: Flow<Int> = preferences.data
+        .catch { emit(emptyPreferences()) }
+        .map { it[HEART_NUMBER_KEY] ?: 0 }
+
     override suspend fun setCountryId(countryId: Long) {
         preferences.edit { it[COUNTRY_ID_KEY] = countryId }
+    }
+
+    override suspend fun setHeartNumber(heartNumber: Int) {
+        preferences.edit { it[HEART_NUMBER_KEY] = heartNumber }
     }
 }

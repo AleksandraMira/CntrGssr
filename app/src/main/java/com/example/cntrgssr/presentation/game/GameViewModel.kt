@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class GameViewModel @Inject constructor(
     private val countryDao: CountryDao,
     private val resourceResolver: ResourceResolver,
-    preferencesDataStoreRepository: PreferencesDataStoreRepository,
+    private val preferencesDataStoreRepository: PreferencesDataStoreRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(Game.UiState())
     val uiState = _uiState.asStateFlow()
@@ -30,7 +31,9 @@ class GameViewModel @Inject constructor(
     val uiEvent = _uiEvent.asSharedFlow()
 
     private val country = preferencesDataStoreRepository.countryId
+        .distinctUntilChanged()
         .map { id ->
+            preferencesDataStoreRepository.setHeartNumber(3)
             if (id == -1L) null
             else countryDao.getCountryById(id)
         }
@@ -70,24 +73,23 @@ class GameViewModel @Inject constructor(
             return
         }
 
-        if (answer.equals(correctCountryName, ignoreCase = true)) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (answer.equals(correctCountryName, ignoreCase = true)) {
                 _uiEvent.emit(Game.UiEvent.NavigateToResults)
+                return@launch
             }
-            return
-        }
 
-        val newHeartNumber = currentHeartNumber - 1
-        if (newHeartNumber == 0) {
-            viewModelScope.launch {
+            val newHeartNumber = currentHeartNumber - 1
+            preferencesDataStoreRepository.setHeartNumber(newHeartNumber)
+            if (newHeartNumber == 0) {
                 _uiEvent.emit(Game.UiEvent.NavigateToResults)
-            }
-        } else {
-            _uiState.update {
-                it.copy(
-                    heartNumber = newHeartNumber,
-                    answer = "",
-                )
+            } else {
+                _uiState.update {
+                    it.copy(
+                        heartNumber = newHeartNumber,
+                        answer = "",
+                    )
+                }
             }
         }
     }

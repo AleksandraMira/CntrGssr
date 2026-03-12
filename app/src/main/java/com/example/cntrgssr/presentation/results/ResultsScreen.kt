@@ -37,9 +37,9 @@ fun ResultsScreen(
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                HeartImage(true)
-                HeartImage(true)
-                HeartImage(false)
+                HeartImage(uiState.heartNumber > 2)
+                HeartImage(uiState.heartNumber > 1)
+                HeartImage(uiState.heartNumber > 0)
             }
 
             ElevatedCard(
@@ -85,8 +85,9 @@ fun ResultsScreen(
                             style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
                         )
                         Text(
-                            "-5 pts",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+                            "${uiState.heartPoints} pts",
+                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp),
+                            color = if (uiState.heartPoints < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Row(
