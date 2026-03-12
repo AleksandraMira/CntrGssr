@@ -15,7 +15,7 @@ interface CountryDao {
     suspend fun deleteAllCountries()
 
     @Query("SELECT id FROM country ORDER BY RANDOM() LIMIT 1")
-    suspend fun getRandomCountryId(): Long?
+    suspend fun getRandomCountryId(): Long
 
     @Query("SELECT * FROM country WHERE id = :id")
     suspend fun getCountryById(id: Long): CountryEntity?

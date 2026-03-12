@@ -26,4 +26,22 @@ class ResultsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = Results.UiState(),
         )
+
+    fun onUserEvent(event: Results.UserEvent) {
+        when (event) {
+            Results.UserEvent.OnExitButtonClicked -> viewModelScope.launch {
+                _uiEvent.emit(Results.UiEvent.NavigateToHome)
+            }
+
+            Results.UserEvent.OnPlayAgainButtonClicked -> startNewGame()
+        }
+    }
+
+    private fun startNewGame() = viewModelScope.launch {
+        preferencesDataStoreRepository.setCountryId(
+            countryDao.getRandomCountryId()
+        )
+
+        _uiEvent.emit(Results.UiEvent.NavigateToGame)
+    }
 }

@@ -22,6 +22,7 @@ import com.example.cntrgssr.theme.AppTheme
 @Composable
 fun ResultsScreen(
     uiState: Results.UiState,
+    onUserEvent: (Results.UserEvent) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -110,12 +111,12 @@ fun ResultsScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     content = { Text("Play Again") },
-                    onClick = {},
+                    onClick = { onUserEvent(Results.UserEvent.OnPlayAgainButtonClicked) },
                 )
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     content = { Text("Exit") },
-                    onClick = {},
+                    onClick = { onUserEvent(Results.UserEvent.OnExitButtonClicked) },
                 )
             }
         }
