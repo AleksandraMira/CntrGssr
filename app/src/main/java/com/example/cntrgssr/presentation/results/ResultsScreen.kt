@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,17 +30,28 @@ fun ResultsScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
     ) {
-        Text(text = "You WON!", style = MaterialTheme.typography.headlineLarge)
+        Text(
+            text = when {
+                uiState.isGaveUp -> "You gave up!"
+                uiState.heartNumber == 3 -> "Perfect! You won!"
+                uiState.heartNumber == 2 -> "Great! You won!"
+                uiState.heartNumber == 1 -> "Good! You won!"
+                else -> "Game Over!"
+            },
+            style = MaterialTheme.typography.headlineLarge,
+        )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                HeartImage(uiState.heartNumber > 2)
-                HeartImage(uiState.heartNumber > 1)
-                HeartImage(uiState.heartNumber > 0)
+            if (!uiState.isGaveUp) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    HeartImage(uiState.heartNumber > 2)
+                    HeartImage(uiState.heartNumber > 1)
+                    HeartImage(uiState.heartNumber > 0)
+                }
             }
 
             ElevatedCard(
@@ -49,58 +61,31 @@ fun ResultsScreen(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                     horizontalAlignment = Alignment.Start,
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "Correct answer:",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+                    ResultRow(
+                        label = "Correct answer:",
+                        value = uiState.countryName,
+                    )
+                    if (!uiState.isGaveUp) {
+                        ResultRow(
+                            label = "Your result:",
+                            value = "20 pts",
                         )
-                        Text(
-                            uiState.countryName,
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+
+                        ResultRow(
+                            label = "${3 - uiState.heartNumber} lives used:",
+                            value = "${uiState.heartPoints} pts",
+                            valueColor = if (uiState.heartPoints < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onTertiaryFixedVariant,
                         )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "Your result:",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+
+                        ResultRow(
+                            label = "Y hints used:",
+                            value = "-10 pts",
                         )
-                        Text(
-                            "20 pts",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
-                        )
-                    }
-                    
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "X lives used:",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
-                        )
-                        Text(
-                            "${uiState.heartPoints} pts",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp),
-                            color = if (uiState.heartPoints < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "Y hints used:",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
-                        )
-                        Text(
-                            "-10 pts",
-                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp)
+                    } else {
+                        ResultRow(
+                            label = "Your result:",
+                            value = "0 pts",
+                            valueColor = MaterialTheme.colorScheme.error
                         )
                     }
                 }
@@ -122,6 +107,26 @@ fun ResultsScreen(
             }
         }
     }
+}
+
+@Composable
+private fun ResultRow(
+    label: String,
+    value: String,
+    valueColor: Color = MaterialTheme.colorScheme.onSurface
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        ResultText(label)
+        ResultText(value, color = valueColor)
+    }
+}
+
+@Composable
+private fun ResultText(text: String, color: Color = MaterialTheme.colorScheme.onSurface) {
+    Text(text, style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp), color = color)
 }
 
 @Preview(showBackground = true)

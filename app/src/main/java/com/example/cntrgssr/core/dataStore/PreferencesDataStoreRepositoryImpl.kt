@@ -3,6 +3,7 @@ package com.example.cntrgssr.core.dataStore
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -21,6 +22,7 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
     companion object {
         val COUNTRY_ID_KEY = longPreferencesKey("country_id")
         val HEART_NUMBER_KEY = intPreferencesKey("heart_number")
+        val IS_GAVE_UP_KEY = booleanPreferencesKey("is_gave_up")
     }
 
     override val countryId: Flow<Long> = preferences.data
@@ -31,11 +33,19 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
         .catch { emit(emptyPreferences()) }
         .map { it[HEART_NUMBER_KEY] ?: 0 }
 
+    override val isGaveUp: Flow<Boolean> = preferences.data
+        .catch { emit(emptyPreferences()) }
+        .map { it[IS_GAVE_UP_KEY] ?: false }
+
     override suspend fun setCountryId(countryId: Long) {
         preferences.edit { it[COUNTRY_ID_KEY] = countryId }
     }
 
     override suspend fun setHeartNumber(heartNumber: Int) {
         preferences.edit { it[HEART_NUMBER_KEY] = heartNumber }
+    }
+
+    override suspend fun setIsGaveUp(isGaveUp: Boolean) {
+        preferences.edit { it[IS_GAVE_UP_KEY] = isGaveUp }
     }
 }

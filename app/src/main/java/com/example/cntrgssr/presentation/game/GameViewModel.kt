@@ -33,7 +33,7 @@ class GameViewModel @Inject constructor(
     private val country = preferencesDataStoreRepository.countryId
         .distinctUntilChanged()
         .map { id ->
-            preferencesDataStoreRepository.setHeartNumber(3)
+            setInitialValues()
             if (id == -1L) null
             else countryDao.getCountryById(id)
         }
@@ -46,8 +46,15 @@ class GameViewModel @Inject constructor(
      fun onEvent(event: Game.UserEvent) {
         when (event) {
             is Game.UserEvent.OnAnswerChange -> onAnswerChange(event.answer)
-            is Game.UserEvent.OnSubmitAnswer -> onSubmitAnswer()
-            is Game.UserEvent.OnSnackbarShown -> clearSnackbar()
+            Game.UserEvent.OnSubmitAnswer -> onSubmitAnswer()
+            Game.UserEvent.OnSnackbarShown -> clearSnackbar()
+            Game.UserEvent.OnGiveUpDialogConfirm -> giveUp()
+            Game.UserEvent.OnGiveUpButtonClicked -> _uiState.update {
+                it.copy(isGiveUpDialogVisible = true)
+            }
+            Game.UserEvent.OnGiveUpDialogDismiss -> _uiState.update {
+                it.copy(isGiveUpDialogVisible = false)
+            }
         }
     }
 
@@ -98,5 +105,17 @@ class GameViewModel @Inject constructor(
         _uiState.update {
             it.copy(snackbarMessage = null)
         }
+    }
+
+    private fun giveUp() {
+        viewModelScope.launch {
+            preferencesDataStoreRepository.setIsGaveUp(true)
+            _uiEvent.emit(Game.UiEvent.NavigateToResults)
+        }
+    }
+
+    private suspend fun setInitialValues() {
+        preferencesDataStoreRepository.setIsGaveUp(false)
+        preferencesDataStoreRepository.setHeartNumber(3)
     }
 }

@@ -40,12 +40,16 @@ object Game : NavigationNode() {
         val answer: String = "",
         val snackbarMessage: String? = null,
         val heartNumber: Int = 3,
+        val isGiveUpDialogVisible: Boolean = false,
     )
 
     sealed interface UserEvent {
         data class OnAnswerChange(val answer: String) : UserEvent
         data object OnSubmitAnswer : UserEvent
         data object OnSnackbarShown : UserEvent
+        data object OnGiveUpButtonClicked : UserEvent
+        data object OnGiveUpDialogDismiss : UserEvent
+        data object OnGiveUpDialogConfirm : UserEvent
     }
 
     sealed interface UiEvent {

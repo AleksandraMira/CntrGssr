@@ -2,6 +2,7 @@ package com.example.cntrgssr.presentation.game
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,9 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DropdownMenuItem
@@ -27,6 +30,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -35,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsCompat
@@ -61,7 +66,7 @@ fun GameScreen(
 
     val snackbarHostState = remember { SnackbarHostState() }
     // TODO: Add navigate back handling
-    Scaffold (
+    Scaffold(
         snackbarHost = {
             SnackbarHost(
                 hostState = snackbarHostState,
@@ -164,11 +169,17 @@ fun GameScreen(
                             modifier = Modifier.fillMaxWidth(),
                             content = { Text(stringResource(R.string.game_screen_submit_button)) },
                             onClick = { onUserEvent(Game.UserEvent.OnSubmitAnswer) },
+                            colors = ButtonColors(
+                                containerColor = MaterialTheme.colorScheme.onTertiaryFixedVariant,
+                                contentColor = MaterialTheme.colorScheme.onTertiary,
+                                disabledContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                disabledContentColor = MaterialTheme.colorScheme.onBackground,
+                            )
                         )
                         Button(
                             modifier = Modifier.fillMaxWidth(),
-                            content = { Text("Give Up") },
-                            onClick = {},
+                            content = { Text(stringResource(R.string.game_screen_give_up_button)) },
+                            onClick = { onUserEvent(Game.UserEvent.OnGiveUpButtonClicked) },
                             colors = ButtonColors(
                                 containerColor = MaterialTheme.colorScheme.errorContainer,
                                 contentColor = MaterialTheme.colorScheme.onError,
@@ -184,6 +195,47 @@ fun GameScreen(
                 uiState.snackbarMessage?.let { message ->
                     snackbarHostState.showSnackbar(message)
                     onUserEvent(Game.UserEvent.OnSnackbarShown)
+                }
+            }
+
+            if (uiState.isGiveUpDialogVisible) {
+                BasicAlertDialog(
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(16.dp),
+                    onDismissRequest = { onUserEvent(Game.UserEvent.OnGiveUpDialogDismiss) },
+                ) {
+                    Column {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp),
+                            style = MaterialTheme.typography.headlineSmall,
+                            text = stringResource(R.string.game_screen_give_up_dialog_title),
+                        )
+                        Text(
+                            text = stringResource(R.string.game_screen_give_up_dialog_description),
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Start,
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(9.dp, Alignment.End),
+                        ) {
+                            TextButton(
+                                content = { Text(stringResource(R.string.game_screen_no_button)) },
+                                onClick = { onUserEvent(Game.UserEvent.OnGiveUpDialogDismiss) },
+                            )
+                            TextButton(
+                                content = { Text(stringResource(R.string.game_screen_yes_button)) },
+                                onClick = { onUserEvent(Game.UserEvent.OnGiveUpDialogConfirm) },
+                            )
+                        }
+                    }
                 }
             }
         }

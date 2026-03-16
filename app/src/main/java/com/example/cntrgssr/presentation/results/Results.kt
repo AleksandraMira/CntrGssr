@@ -51,6 +51,7 @@ object Results : NavigationNode() {
         val countryName: String = "",
         val heartNumber: Int = 0,
         val heartPoints: Int = 0,
+        val isGaveUp: Boolean = false,
     )
 
     sealed interface UiEvent {

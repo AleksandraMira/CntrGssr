@@ -23,6 +23,11 @@
     <string name="game_screen_your_guess">Your Guess</string>
     <string name="game_screen_submit_button">Submit</string>
     <string name="game_screen_empty_answer">Answer cannot be empty</string>
+    <string name="game_screen_give_up_button">Give Up</string>
+    <string name="game_screen_no_button">No</string>
+    <string name="game_screen_yes_button">Yes</string>
+    <string name="game_screen_give_up_dialog_title">Give Up?</string>
+    <string name="game_screen_give_up_dialog_description">Are you sure you want to give up? You will lose all your points.</string>
     <!-- Game Screen end -->
 
 </resources>
