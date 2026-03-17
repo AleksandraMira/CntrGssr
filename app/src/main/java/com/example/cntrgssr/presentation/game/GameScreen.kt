@@ -15,11 +15,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +36,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -56,6 +61,7 @@ fun GameScreen(
     uiState: Game.UiState,
 ) {
     val activity = LocalContext.current as Activity
+    var isDropdownExpanded by remember { mutableStateOf(false) }
 
     SideEffect {
         WindowInsetsControllerCompat(
@@ -103,43 +109,69 @@ fun GameScreen(
                         text = stringResource(R.string.guide_screen_title),
                         style = MaterialTheme.typography.headlineLarge
                     )
+
                     ExposedDropdownMenuBox(
-                        expanded = false,
-                        onExpandedChange = { /*TODO*/ },
+                        expanded = isDropdownExpanded,
+                        onExpandedChange = { isDropdownExpanded = it },
                     ) {
                         OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = "Select an option",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true),
+                            value = when{
+                                uiState.selectedHint != null -> stringResource(uiState.selectedHint.resId)
+                                uiState.availableHintOptions.isEmpty() -> stringResource(R.string.game_screen_no_hints_available)
+                                else -> stringResource(R.string.game_screen_select_a_hint)
+                            },
                             onValueChange = {},
                             label = { Text("Hint", style = MaterialTheme.typography.labelLarge) },
                             readOnly = true,
                             singleLine = true,
-                            // TODO: Add trailing icon for dropdown (see ExposedDropdownMenuBox docs for example)
                             trailingIcon = {
-                                Icon(Icons.Default.KeyboardArrowDown, "")
+                                Icon(
+                                    if (isDropdownExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                    ""
+                                )
                             }
                         )
                         ExposedDropdownMenu(
-                            expanded = false,
-                            onDismissRequest = { /*TODO remember boolean value */ },
+                            expanded = isDropdownExpanded,
+                            onDismissRequest = { isDropdownExpanded = false },
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                         ) {
-                            DropdownMenuItem(
-                                // TODO: Add modifier background for chosen option
-                                text = { Text("Option 1") },
-                                onClick = { /*TODO*/ }
-                            )
+                            uiState.availableHintOptions.forEach {
+                                DropdownMenuItem(
+                                    modifier = Modifier
+                                        .apply {
+                                            if (uiState.selectedHint == it) {
+                                                background(
+                                                    MaterialTheme.colorScheme.inverseOnSurface,
+                                                )
+                                            }
+                                        },
+                                    text = { Text(stringResource(it.resId)) },
+                                    onClick = {
+                                        if (it != uiState.selectedHint) {
+                                            onUserEvent(Game.UserEvent.OnHintOptionSelected(it))
+                                        }
+                                        isDropdownExpanded = false
+                                    }
+                                )
+                            }
                         }
                     }
                     Button(
                         modifier = Modifier.fillMaxWidth(),
-                        content = { Text("Show Hint") },
-                        onClick = {},
+                        content = { Text(stringResource(R.string.game_screen_hint_button)) },
+                        onClick = { onUserEvent(Game.UserEvent.OnHintButtonClicked) },
                     )
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = "1.XYZ \n2.ABC \n3.DEF",
-                        onValueChange = { /*TODO*/ },
-                        label = { Text("Hint Log", style = MaterialTheme.typography.labelLarge) },
+                        value = uiState.hintLog.entries.mapIndexed { index, entry ->
+                            "${index + 1}.${stringResource(entry.key.resId)}: ${entry.value}"
+                        }.joinToString("\n"),
+                        onValueChange = {},
+                        label = { Text(stringResource(R.string.game_screen_hint_log), style = MaterialTheme.typography.labelLarge) },
                         singleLine = false,
                         readOnly = true,
                     )

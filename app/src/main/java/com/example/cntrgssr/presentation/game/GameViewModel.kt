@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cntrgssr.R
 import com.example.cntrgssr.core.data.dao.CountryDao
+import com.example.cntrgssr.core.data.enums.HintType
 import com.example.cntrgssr.core.dataStore.PreferencesDataStoreRepository
 import com.example.cntrgssr.core.util.ResourceResolver
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -55,6 +57,10 @@ class GameViewModel @Inject constructor(
             Game.UserEvent.OnGiveUpDialogDismiss -> _uiState.update {
                 it.copy(isGiveUpDialogVisible = false)
             }
+            is Game.UserEvent.OnHintOptionSelected -> _uiState.update {
+                it.copy(selectedHint = event.hintType)
+            }
+            Game.UserEvent.OnHintButtonClicked -> handleHintButtonClick()
         }
     }
 
@@ -117,5 +123,34 @@ class GameViewModel @Inject constructor(
     private suspend fun setInitialValues() {
         preferencesDataStoreRepository.setIsGaveUp(false)
         preferencesDataStoreRepository.setHeartNumber(3)
+        preferencesDataStoreRepository.setHintNumber(0)
+    }
+
+    private fun handleHintButtonClick() {
+        if (uiState.value.selectedHint == null) {
+            _uiState.update {
+                it.copy(
+                    snackbarMessage = resourceResolver.getString(R.string.game_screen_no_hint_selected)
+                )
+            }
+            return
+        }
+        val selectedHint = uiState.value.selectedHint ?: return
+
+
+        viewModelScope.launch {
+            preferencesDataStoreRepository.setHintNumber(preferencesDataStoreRepository.hintNumber.first() + 1)
+            _uiState.update {
+                it.copy(
+                    availableHintOptions = it.availableHintOptions - selectedHint,
+                    selectedHint = null,
+                    hintLog = it.hintLog + (selectedHint to (selectedHint.getHint() ?: "ERROR"))
+                )
+            }
+        }
+    }
+
+    private fun HintType.getHint() = when (this) {
+        HintType.CONTINENT -> country.value?.continent?.resId?.let { resourceResolver.getString(it) }
     }
 }

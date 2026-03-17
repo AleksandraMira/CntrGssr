@@ -12,7 +12,7 @@
     <string name="guide_screen_hints_title">1. Hints</string>
     <string name="guide_screen_hints_description">You can use hints, but each hint costs 10 points.\nSelect a hint from the dropdown menu and tap the Hint button to reveal it.</string>
     <string name="guide_screen_lives_title">2. Lives</string>
-    <string name="guide_screen_lives_description">You start with 3 lives.\nEach incorrect answer costs 1 life and 8 points.\nIf you lose all your lives, the game is over.</string>
+    <string name="guide_screen_lives_description">You start with 3 lives.\nEach incorrect answer costs 1 life and 10 points.\nIf you lose all your lives, the game is over.</string>
     <string name="guide_screen_good_luck">Have fun playing and good luck!</string>
     <string name="guide_screen_back_button">Back</string>
     <string name="guide_screen_give_up_title">3. Give Up</string>
@@ -28,6 +28,23 @@
     <string name="game_screen_yes_button">Yes</string>
     <string name="game_screen_give_up_dialog_title">Give Up?</string>
     <string name="game_screen_give_up_dialog_description">Are you sure you want to give up? You will lose all your points.</string>
+    <string name="game_screen_no_hints_available">No hints available</string>
+    <string name="game_screen_select_a_hint">Select a hint</string>
     <!-- Game Screen end -->
 
+    <!-- Continent Names start -->
+    <string name="continent_asia">Asia</string>
+    <string name="continent_europe">Europe</string>
+    <string name="continent_africa">Africa</string>
+    <string name="continent_north_america">North America</string>
+    <string name="continent_south_america">South America</string>
+    <string name="continent_oceania">Oceania</string>
+    <!-- Continent Names end -->
+
+    <!-- Hint Names start -->
+    <string name="hint_continent">Continent</string>
+    <string name="game_screen_hint_log">Hint Log</string>
+    <string name="game_screen_hint_button">Show Hint</string>
+    <string name="game_screen_no_hint_selected">No hint selected!</string>
+    <!-- Hint Names end -->
 </resources>

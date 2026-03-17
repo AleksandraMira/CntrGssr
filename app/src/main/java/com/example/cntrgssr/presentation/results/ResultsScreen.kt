@@ -65,10 +65,10 @@ fun ResultsScreen(
                         label = "Correct answer:",
                         value = uiState.countryName,
                     )
-                    if (!uiState.isGaveUp) {
+                    if (!uiState.isGaveUp && uiState.heartNumber > 0) {
                         ResultRow(
                             label = "Your result:",
-                            value = "20 pts",
+                            value = "${100 + uiState.heartPoints + uiState.hintNumber} pts",
                         )
 
                         ResultRow(
@@ -78,8 +78,9 @@ fun ResultsScreen(
                         )
 
                         ResultRow(
-                            label = "Y hints used:",
-                            value = "-10 pts",
+                            label = "${uiState.hintNumber} hints used:",
+                            value = "${uiState.hintPoints} pts",
+                            valueColor = if (uiState.hintNumber > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onTertiaryFixedVariant,
                         )
                     } else {
                         ResultRow(

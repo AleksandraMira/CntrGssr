@@ -41,10 +41,6 @@ class HomeViewModel @Inject constructor(
     private fun startTheGame() {
         viewModelScope.launch {
             val countryId = countryDao.getRandomCountryId()
-            if (countryId == null) {
-                Timber.tag(HomeViewModel::class.java.simpleName).e("No countries found in the database.")
-                return@launch
-            }
 
             Timber.d("Selected country ID: $countryId")
             preferencesDataStoreRepository.setCountryId(countryId)

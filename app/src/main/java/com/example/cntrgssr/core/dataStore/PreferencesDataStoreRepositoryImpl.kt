@@ -23,6 +23,7 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
         val COUNTRY_ID_KEY = longPreferencesKey("country_id")
         val HEART_NUMBER_KEY = intPreferencesKey("heart_number")
         val IS_GAVE_UP_KEY = booleanPreferencesKey("is_gave_up")
+        val HINT_NUMBER_KEY = intPreferencesKey("hint_number")
     }
 
     override val countryId: Flow<Long> = preferences.data
@@ -37,6 +38,10 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
         .catch { emit(emptyPreferences()) }
         .map { it[IS_GAVE_UP_KEY] ?: false }
 
+    override val hintNumber: Flow<Int> = preferences.data
+        .catch { emit(emptyPreferences()) }
+        .map { it[HINT_NUMBER_KEY] ?: 0 }
+
     override suspend fun setCountryId(countryId: Long) {
         preferences.edit { it[COUNTRY_ID_KEY] = countryId }
     }
@@ -47,5 +52,9 @@ class PreferencesDataStoreRepositoryImpl @Inject constructor(
 
     override suspend fun setIsGaveUp(isGaveUp: Boolean) {
         preferences.edit { it[IS_GAVE_UP_KEY] = isGaveUp }
+    }
+
+    override suspend fun setHintNumber(hintNumber: Int) {
+        preferences.edit { it[HINT_NUMBER_KEY] = hintNumber }
     }
 }
