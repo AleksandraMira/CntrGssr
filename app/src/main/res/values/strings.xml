@@ -30,6 +30,9 @@
     <string name="game_screen_give_up_dialog_description">Are you sure you want to give up? You will lose all your points.</string>
     <string name="game_screen_no_hints_available">No hints available</string>
     <string name="game_screen_select_a_hint">Select a hint</string>
+    <string name="game_screen_hint_log">Hint Log</string>
+    <string name="game_screen_hint_button">Show Hint</string>
+    <string name="game_screen_no_hint_selected">No hint selected!</string>
     <!-- Game Screen end -->
 
     <!-- Continent Names start -->
@@ -43,8 +46,6 @@
 
     <!-- Hint Names start -->
     <string name="hint_continent">Continent</string>
-    <string name="game_screen_hint_log">Hint Log</string>
-    <string name="game_screen_hint_button">Show Hint</string>
-    <string name="game_screen_no_hint_selected">No hint selected!</string>
+    <string name="hint_capital_letters">Capital name length</string>
     <!-- Hint Names end -->
 </resources>

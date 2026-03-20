@@ -68,7 +68,7 @@ fun ResultsScreen(
                     if (!uiState.isGaveUp && uiState.heartNumber > 0) {
                         ResultRow(
                             label = "Your result:",
-                            value = "${100 + uiState.heartPoints + uiState.hintNumber} pts",
+                            value = "${uiState.points} pts",
                         )
 
                         ResultRow(

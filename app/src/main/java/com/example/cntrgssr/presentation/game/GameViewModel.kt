@@ -114,6 +114,9 @@ class GameViewModel @Inject constructor(
     }
 
     private fun giveUp() {
+        _uiState.update {
+            it.copy(isGiveUpDialogVisible = false)
+        }
         viewModelScope.launch {
             preferencesDataStoreRepository.setIsGaveUp(true)
             _uiEvent.emit(Game.UiEvent.NavigateToResults)
@@ -152,5 +155,6 @@ class GameViewModel @Inject constructor(
 
     private fun HintType.getHint() = when (this) {
         HintType.CONTINENT -> country.value?.continent?.resId?.let { resourceResolver.getString(it) }
+        HintType.CAPITAL_LETTERS -> country.value?.capitol?.replace(" ", "")?.length.toString()
     }
 }

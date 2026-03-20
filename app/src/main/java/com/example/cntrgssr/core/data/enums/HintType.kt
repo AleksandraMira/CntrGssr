@@ -4,4 +4,5 @@ import com.example.cntrgssr.R
 
 enum class HintType(val resId: Int) {
     CONTINENT(R.string.hint_continent),
+    CAPITAL_LETTERS(R.string.hint_capital_letters),
 }

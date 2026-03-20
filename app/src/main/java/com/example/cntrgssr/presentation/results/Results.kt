@@ -54,6 +54,7 @@ object Results : NavigationNode() {
         val isGaveUp: Boolean = false,
         val hintNumber: Int = 0,
         val hintPoints: Int = 0,
+        val points: Int = 0,
     )
 
     sealed interface UiEvent {

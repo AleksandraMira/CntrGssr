@@ -27,13 +27,17 @@ class ResultsViewModel @Inject constructor(
         preferencesDataStoreRepository.isGaveUp,
         preferencesDataStoreRepository.hintNumber,
     ) { id, heartNumber, isGaveUp, hintNumber ->
+        val hintPoints = -hintNumber * 10
+        val heartPoints = -(3 - heartNumber) * 10
+        val totalPoints = 100 + heartPoints + hintPoints
         Results.UiState(
             countryName = countryDao.getCountryNameById(id),
             heartNumber = heartNumber,
-            heartPoints = -(3 - heartNumber) * 10,
+            heartPoints = heartPoints,
             isGaveUp = isGaveUp,
             hintNumber = hintNumber,
-            hintPoints = -hintNumber * 10,
+            hintPoints = hintPoints,
+            points = totalPoints,
         )
     }
         .stateIn(
