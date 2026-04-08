@@ -12,6 +12,10 @@ android {
     namespace = "com.example.cntrgssr"
     compileSdk = 36
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.cntrgssr"
         minSdk = 35
@@ -20,6 +24,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"${project.findProperty("API_KEY")}\"")
     }
 
     buildTypes {
@@ -83,4 +89,9 @@ dependencies {
     testImplementation(libs.junit5.params)
     testRuntimeOnly(libs.junit5.engine)
     testRuntimeOnly(libs.junit5.vintage.engine)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp.loggingInterceptor)
 }

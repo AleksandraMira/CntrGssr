@@ -47,5 +47,6 @@
     <!-- Hint Names start -->
     <string name="hint_continent">Continent</string>
     <string name="hint_capital_letters">Capital name length</string>
+    <string name="hint_population">Population in country</string>
     <!-- Hint Names end -->
 </resources>

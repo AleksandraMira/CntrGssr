@@ -3,6 +3,7 @@ package com.example.cntrgssr.presentation.game
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cntrgssr.R
+import com.example.cntrgssr.core.data.api.CountryApi
 import com.example.cntrgssr.core.data.dao.CountryDao
 import com.example.cntrgssr.core.data.enums.HintType
 import com.example.cntrgssr.core.dataStore.PreferencesDataStoreRepository
@@ -19,10 +20,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
+    private val countryApi: CountryApi,
     private val countryDao: CountryDao,
     private val resourceResolver: ResourceResolver,
     private val preferencesDataStoreRepository: PreferencesDataStoreRepository,
@@ -153,8 +156,24 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    private fun HintType.getHint() = when (this) {
+    private suspend fun HintType.getHint() = when (this) {
         HintType.CONTINENT -> country.value?.continent?.resId?.let { resourceResolver.getString(it) }
-        HintType.CAPITAL_LETTERS -> country.value?.capitol?.replace(" ", "")?.length.toString()
+        HintType.CAPITAL_LETTERS -> country.value?.capitol?.replace(" ", "")?.replace("\'", "")?.length.toString()
+        HintType.POPULATION -> getPopulation()?: "N/A"
+    }
+
+    private suspend fun getPopulation(): String? {
+        val name = country.value?.name ?: return null
+
+        return try {
+            val response = countryApi.getCountry(name)
+            val population = response.firstOrNull()?.population?: return null
+
+            Timber.d("Population: $population")
+            "$population K"
+        } catch (e: Exception) {
+            Timber.e(e, "API error")
+            null
+        }
     }
 }
