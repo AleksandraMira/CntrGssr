@@ -33,7 +33,26 @@
     <string name="game_screen_hint_log">Hint Log</string>
     <string name="game_screen_hint_button">Show Hint</string>
     <string name="game_screen_no_hint_selected">No hint selected!</string>
+    <string name="game_screen_population_number">%1$s K</string>
+    <string name="game_screen_error">ERROR</string>
+    <string name="game_screen_hint_label">Hint</string>
+    <string name="game_screen_hint_entry">%1$s.%2$s: %3$s</string>
     <!-- Game Screen end -->
+
+    <!-- Results Screen start -->
+    <string name="results_screen_gave_up">You gave up!</string>
+    <string name="results_screen_perfect_result">Perfect! You won!</string>
+    <string name="results_screen_great_result">Great! You won!</string>
+    <string name="results_screen_good_result">Good! You won!</string>
+    <string name="results_screen_loose_result">Game Over!</string>
+    <string name="results_screen_correct_answer_label">Correct answer:</string>
+    <string name="results_screen_your_result_label">Your result:</string>
+    <string name="results_screen_points">%1$s pts</string>
+    <string name="results_screen_lives_used_label">%1$s lives used:</string>
+    <string name="results_screen_hints_used_label">%1$s hints used:</string>
+    <string name="results_screen_play_again_button">Play Again</string>
+    <string name="results_screen_exit_button">Exit</string>
+    <!-- Results Screen end -->
 
     <!-- Continent Names start -->
     <string name="continent_asia">Asia</string>

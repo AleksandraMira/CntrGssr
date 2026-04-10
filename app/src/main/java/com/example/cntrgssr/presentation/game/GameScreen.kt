@@ -124,7 +124,7 @@ fun GameScreen(
                                 else -> stringResource(R.string.game_screen_select_a_hint)
                             },
                             onValueChange = {},
-                            label = { Text("Hint", style = MaterialTheme.typography.labelLarge) },
+                            label = { Text(stringResource(R.string.game_screen_hint_label), style = MaterialTheme.typography.labelLarge) },
                             readOnly = true,
                             singleLine = true,
                             trailingIcon = {
@@ -168,7 +168,12 @@ fun GameScreen(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = uiState.hintLog.entries.mapIndexed { index, entry ->
-                            "${index + 1}.${stringResource(entry.key.resId)}: ${entry.value}"
+                            stringResource(
+                                R.string.game_screen_hint_entry,
+                                index + 1,
+                                stringResource(entry.key.resId),
+                                entry.value
+                            )
                         }.joinToString("\n"),
                         onValueChange = {},
                         label = { Text(stringResource(R.string.game_screen_hint_log), style = MaterialTheme.typography.labelLarge) },

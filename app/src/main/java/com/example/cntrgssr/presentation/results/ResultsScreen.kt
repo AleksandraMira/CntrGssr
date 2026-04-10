@@ -14,9 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cntrgssr.R
 import com.example.cntrgssr.core.presentation.HeartImage
 import com.example.cntrgssr.theme.AppTheme
 
@@ -32,11 +34,11 @@ fun ResultsScreen(
     ) {
         Text(
             text = when {
-                uiState.isGaveUp -> "You gave up!"
-                uiState.heartNumber == 3 -> "Perfect! You won!"
-                uiState.heartNumber == 2 -> "Great! You won!"
-                uiState.heartNumber == 1 -> "Good! You won!"
-                else -> "Game Over!"
+                uiState.isGaveUp -> stringResource(R.string.results_screen_gave_up)
+                uiState.heartNumber == 3 -> stringResource(R.string.results_screen_perfect_result)
+                uiState.heartNumber == 2 -> stringResource(R.string.results_screen_great_result)
+                uiState.heartNumber == 1 -> stringResource(R.string.results_screen_good_result)
+                else -> stringResource(R.string.results_screen_loose_result)
             },
             style = MaterialTheme.typography.headlineLarge,
         )
@@ -62,30 +64,36 @@ fun ResultsScreen(
                     horizontalAlignment = Alignment.Start,
                 ) {
                     ResultRow(
-                        label = "Correct answer:",
+                        label = stringResource(R.string.results_screen_correct_answer_label),
                         value = uiState.countryName,
                     )
                     if (!uiState.isGaveUp && uiState.heartNumber > 0) {
                         ResultRow(
-                            label = "Your result:",
-                            value = "${uiState.points} pts",
+                            label = stringResource(R.string.results_screen_your_result_label),
+                            value = stringResource(R.string.results_screen_points, uiState.points),
                         )
 
                         ResultRow(
-                            label = "${3 - uiState.heartNumber} lives used:",
-                            value = "${uiState.heartPoints} pts",
+                            label = stringResource(
+                                R.string.results_screen_lives_used_label,
+                                3 - uiState.heartNumber
+                            ),
+                            value = stringResource(R.string.results_screen_points, uiState.heartPoints),
                             valueColor = if (uiState.heartPoints < 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onTertiaryFixedVariant,
                         )
 
                         ResultRow(
-                            label = "${uiState.hintNumber} hints used:",
-                            value = "${uiState.hintPoints} pts",
+                            label = stringResource(
+                                R.string.results_screen_hints_used_label,
+                                uiState.hintNumber
+                            ),
+                            value = stringResource(R.string.results_screen_points, uiState.hintPoints),
                             valueColor = if (uiState.hintNumber > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onTertiaryFixedVariant,
                         )
                     } else {
                         ResultRow(
-                            label = "Your result:",
-                            value = "0 pts",
+                            label = stringResource(R.string.results_screen_your_result_label),
+                            value = stringResource(R.string.results_screen_points, 0),
                             valueColor = MaterialTheme.colorScheme.error
                         )
                     }
@@ -97,12 +105,12 @@ fun ResultsScreen(
             ) {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    content = { Text("Play Again") },
+                    content = { Text(stringResource(R.string.results_screen_play_again_button)) },
                     onClick = { onUserEvent(Results.UserEvent.OnPlayAgainButtonClicked) },
                 )
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    content = { Text("Exit") },
+                    content = { Text(stringResource(R.string.results_screen_exit_button)) },
                     onClick = { onUserEvent(Results.UserEvent.OnExitButtonClicked) },
                 )
             }

@@ -150,7 +150,7 @@ class GameViewModel @Inject constructor(
                 it.copy(
                     availableHintOptions = it.availableHintOptions - selectedHint,
                     selectedHint = null,
-                    hintLog = it.hintLog + (selectedHint to (selectedHint.getHint() ?: "ERROR"))
+                    hintLog = it.hintLog + (selectedHint to (selectedHint.getHint() ?: resourceResolver.getString(R.string.game_screen_error)))
                 )
             }
         }
@@ -159,7 +159,7 @@ class GameViewModel @Inject constructor(
     private suspend fun HintType.getHint() = when (this) {
         HintType.CONTINENT -> country.value?.continent?.resId?.let { resourceResolver.getString(it) }
         HintType.CAPITAL_LETTERS -> country.value?.capitol?.replace(" ", "")?.replace("\'", "")?.length.toString()
-        HintType.POPULATION -> getPopulation()?: "N/A"
+        HintType.POPULATION -> getPopulation()
     }
 
     private suspend fun getPopulation(): String? {
@@ -170,7 +170,7 @@ class GameViewModel @Inject constructor(
             val population = response.firstOrNull()?.population?: return null
 
             Timber.d("Population: $population")
-            "$population K"
+            resourceResolver.getString(R.string.game_screen_population_number, population)
         } catch (e: Exception) {
             Timber.e(e, "API error")
             null
