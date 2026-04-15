@@ -163,9 +163,10 @@ class GameViewModel @Inject constructor(
     }
 
     private suspend fun getPopulation(): String? {
+        _uiState.update { it.copy(isLoading = true) }
         val name = country.value?.name ?: return null
 
-        return try {
+        val result = try {
             val response = countryApi.getCountry(name)
             val population = response.firstOrNull()?.population?: return null
 
@@ -175,5 +176,8 @@ class GameViewModel @Inject constructor(
             Timber.e(e, "API error")
             null
         }
+
+        _uiState.update { it.copy(isLoading = false) }
+        return result
     }
 }

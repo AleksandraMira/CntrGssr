@@ -45,6 +45,7 @@ object Game : NavigationNode() {
         val selectedHint: HintType? = null,
         val availableHintOptions: List<HintType> = HintType.entries,
         val hintLog: Map<HintType, String> = emptyMap(),
+        val isLoading: Boolean = false,
     )
 
     sealed interface UserEvent {
