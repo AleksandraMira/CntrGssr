@@ -12,6 +12,6 @@ import com.example.cntrgssr.core.data.enums.Continent
 data class CountryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val name: String,
-    val capitol: String,
+    val capital: String,
     val continent: Continent,
 )

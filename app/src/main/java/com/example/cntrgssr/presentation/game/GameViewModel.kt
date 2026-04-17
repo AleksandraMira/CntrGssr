@@ -158,7 +158,7 @@ class GameViewModel @Inject constructor(
 
     private suspend fun HintType.getHint() = when (this) {
         HintType.CONTINENT -> country.value?.continent?.resId?.let { resourceResolver.getString(it) }
-        HintType.CAPITAL_LETTERS -> country.value?.capitol?.replace(" ", "")?.replace("\'", "")?.length.toString()
+        HintType.CAPITAL_LETTERS -> country.value?.capital?.filter { it.isLetter() }?.length.toString()
         HintType.POPULATION -> getPopulation()
     }
 

@@ -31,7 +31,7 @@ object DatabaseModule {
         app,
         CountryDatabase::class.java,
         "country_database"
-    ).build()
+    ).createFromAsset("database/prepopulated_country_database.db").build()
 
     @Provides
     @Singleton

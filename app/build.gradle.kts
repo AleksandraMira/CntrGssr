@@ -94,4 +94,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp.loggingInterceptor)
+
+    //test
+    testImplementation(libs.mockk.core)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
