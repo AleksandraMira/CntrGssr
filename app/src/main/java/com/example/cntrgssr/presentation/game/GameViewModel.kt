@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,8 +38,8 @@ class GameViewModel @Inject constructor(
 
     private val country = preferencesDataStoreRepository.countryId
         .distinctUntilChanged()
+        .onEach { setInitialValues() }
         .map { id ->
-            setInitialValues()
             if (id == -1L) null
             else countryDao.getCountryById(id)
         }
@@ -81,11 +82,7 @@ class GameViewModel @Inject constructor(
         val currentHeartNumber = uiState.value.heartNumber
 
         if (answer.isEmpty()) {
-            _uiState.update {
-                it.copy(
-                    snackbarMessage = resourceResolver.getString(R.string.game_screen_empty_answer)
-                )
-            }
+            showSnackbar(resourceResolver.getString(R.string.game_screen_empty_answer))
             return
         }
 
@@ -110,6 +107,10 @@ class GameViewModel @Inject constructor(
         }
     }
 
+    private fun showSnackbar(message: String) {
+        _uiState.update { it.copy(snackbarMessage = message) }
+    }
+
     private fun clearSnackbar() {
         _uiState.update {
             it.copy(snackbarMessage = null)
@@ -128,17 +129,13 @@ class GameViewModel @Inject constructor(
 
     private suspend fun setInitialValues() {
         preferencesDataStoreRepository.setIsGaveUp(false)
-        preferencesDataStoreRepository.setHeartNumber(3)
-        preferencesDataStoreRepository.setHintNumber(0)
+        preferencesDataStoreRepository.setHeartNumber(INITIAL_HEARTS)
+        preferencesDataStoreRepository.setHintNumber(INITIAL_HINTS)
     }
 
     private fun handleHintButtonClick() {
         if (uiState.value.selectedHint == null) {
-            _uiState.update {
-                it.copy(
-                    snackbarMessage = resourceResolver.getString(R.string.game_screen_no_hint_selected)
-                )
-            }
+            showSnackbar(resourceResolver.getString(R.string.game_screen_no_hint_selected))
             return
         }
         val selectedHint = uiState.value.selectedHint ?: return
@@ -175,9 +172,15 @@ class GameViewModel @Inject constructor(
         } catch (e: Exception) {
             Timber.e(e, "API error")
             null
+        } finally {
+            _uiState.update { it.copy(isLoading = false) }
         }
 
-        _uiState.update { it.copy(isLoading = false) }
         return result
+    }
+
+    private companion object {
+        const val INITIAL_HEARTS = 3
+        const val INITIAL_HINTS = 0
     }
 }
