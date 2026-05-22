@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -56,6 +57,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.kotlinx.serialization.json)
 
     //Room
     implementation(libs.room.ktx)

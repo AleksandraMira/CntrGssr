@@ -8,7 +8,9 @@ import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.data.enums.HintType
 import com.example.cntrgssr.core.navigation.NavigationNode
 import com.example.cntrgssr.presentation.results.Results
+import kotlinx.serialization.Serializable
 
+@Serializable
 object Game : NavigationNode() {
     @Composable
     override fun Screen(navController: NavHostController) {
@@ -31,7 +33,7 @@ object Game : NavigationNode() {
         LaunchedEffect(Unit) {
             viewModel.uiEvent.collect { event ->
                 when (event) {
-                    UiEvent.NavigateToResults -> navController.navigate(Results.route)
+                    UiEvent.NavigateToResults -> navController.navigate(Results)
                 }
             }
         }

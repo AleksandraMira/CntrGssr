@@ -7,8 +7,10 @@ import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.navigation.NavigationNode
 import com.example.cntrgssr.presentation.game.Game
 import com.example.cntrgssr.presentation.guide.Guide
+import kotlinx.serialization.Serializable
 import timber.log.Timber
 
+@Serializable
 object Home : NavigationNode() {
     @Composable
     override fun Screen(navController: NavHostController) {
@@ -32,10 +34,10 @@ object Home : NavigationNode() {
             viewModel.uiEvent.collect { event ->
                 Timber.tag("Home").d("Received UI event: $event")
                 when (event) {
-                    UiEvent.NavigateToGuide -> navController.navigate(Guide.route) {
+                    UiEvent.NavigateToGuide -> navController.navigate(Guide) {
                         launchSingleTop = true
                     }
-                    UiEvent.NavigateToGame -> navController.navigate(Game.route) {
+                    UiEvent.NavigateToGame -> navController.navigate(Game) {
                         launchSingleTop = true
                     }
                 }

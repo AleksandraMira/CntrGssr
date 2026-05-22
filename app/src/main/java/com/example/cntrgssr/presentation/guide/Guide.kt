@@ -5,7 +5,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.cntrgssr.core.navigation.NavigationNode
+import kotlinx.serialization.Serializable
 
+@Serializable
 object Guide : NavigationNode() {
     @Composable
     override fun Screen(navController: NavHostController) {

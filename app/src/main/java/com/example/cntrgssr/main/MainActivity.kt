@@ -33,18 +33,18 @@ class MainActivity : AppCompatActivity() {
         NavHost (
             modifier = Modifier,
             navController = navController,
-            startDestination = Home.route,
+            startDestination = Home,
         ) {
-            composable(Home.route) {
+            composable<Home> {
                 Home.Screen(navController)
             }
-            composable(Guide.route) {
+            composable<Guide> {
                 Guide.Screen(navController)
             }
-            composable(Game.route) {
+            composable<Game> {
                 Game.Screen(navController)
             }
-            composable(Results.route){
+            composable<Results>{
                 Results.Screen(navController)
             }
         }
