@@ -41,8 +41,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,11 +70,16 @@ fun GameScreen(
     val activity = LocalContext.current as Activity
     var isDropdownExpanded by remember { mutableStateOf(false) }
 
-    SideEffect {
-        WindowInsetsControllerCompat(
+    DisposableEffect(Unit) {
+        val controller = WindowInsetsControllerCompat(
             activity.window,
             activity.window.decorView
-        ).hide(WindowInsetsCompat.Type.statusBars())
+        )
+        controller.hide(WindowInsetsCompat.Type.statusBars())
+
+        onDispose {
+            controller.show(WindowInsetsCompat.Type.statusBars())
+        }
     }
 
     val snackbarHostState = remember { SnackbarHostState() }
