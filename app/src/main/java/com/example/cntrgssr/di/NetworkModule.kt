@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -20,6 +21,9 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
+            .connectTimeout(10000, TimeUnit.SECONDS)
+            .readTimeout(10000, TimeUnit.SECONDS)
+            .writeTimeout(10000, TimeUnit.SECONDS)
             .addInterceptor(ApiKeyInterceptor())
             .addInterceptor(
                 HttpLoggingInterceptor(logger = { Timber.d(it)} ).apply {
